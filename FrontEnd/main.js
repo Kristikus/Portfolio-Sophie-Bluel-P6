@@ -27,42 +27,41 @@ worksGen(works);
 
 // Création d'une div pour contenir les boutons et leur appliquer un style css
 const categorieElement = document.querySelector("#portfolio h2");
-const categorieDiv = document.createElement('div');
+const categorieDiv = document.createElement("div");
 categorieElement.after(categorieDiv);
 
-const categorieDivStyle = document.querySelector('#portfolio div');
-categorieDivStyle.classList.add('categories');
+const categorieDivStyle = document.querySelector("#portfolio div");
+categorieDivStyle.classList.add("categories");
 
 
 // Création bouton "Tous"
 const buttonAll = document.createElement("button");
 buttonAll.innerText = "Tous";
-// categorieElement.after(categorieDiv);
 buttonAll.classList.add("btn", "btn-all");
 categorieDivStyle.appendChild(buttonAll);
 
+buttonAll.addEventListener("click", function () {
+    const buttonAllFilter = works.filter(function (work) {
+        return work.categorieId === works.id;
+    });
+    document.querySelector(".gallery").innerHTML = "";
+    worksGen(buttonAllFilter);
+})
 
 // Creation categories boutons depuis l'api
 const reponse = await fetch("http://localhost:5678/api/categories");
 const categories = await reponse.json();
 
 for (let i = 0; i < categories.length; i++) {
-    // console.log(categories[i].name);
-    const buttonFiltered = document.createElement('button');
-    buttonFiltered.classList.add("btn");
-    buttonFiltered.textContent = categories[i].name;
-    categorieDivStyle.appendChild(buttonFiltered);
-}
+    const buttonFilter = document.createElement('button');
+    buttonFilter.classList.add("btn");
+    buttonFilter.textContent = categories[i].name;
+    categorieDivStyle.appendChild(buttonFilter);
 
-const test = document.querySelectorAll('button');
-
-for (let i = 1; i < categories.length + 1; i++) {
-    test[i].addEventListener('click', function () {
-        console.log('Button clicked');
+    buttonFilter.addEventListener("click", function () {
         const worksFiltered = works.filter(function (work) {
-            return work.categoryId === works[i - 1].id
+            return work.categoryId === works[i].id
         });
-        console.log(worksFiltered)
         document.querySelector(".gallery").innerHTML = "";
         worksGen(worksFiltered)
     });
