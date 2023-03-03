@@ -59,7 +59,7 @@ for (let i = 0; i < categories.length; i++) {
     buttonFilter.textContent = categories[i].name;
     categorieDivContain.appendChild(buttonFilter);
 
-// Filtres par catégories au clic sur les boutons avec une catégorie
+    // Filtres par catégories au clic sur les boutons avec une catégorie
     buttonFilter.addEventListener("click", function () {
 
         const worksFiltered = works.filter(function (work) {
@@ -78,6 +78,6 @@ for (let i = 0; i < tabButton.length; i++) {
         let current = document.getElementsByClassName("btn_selected");
         current[0].className = current[0].className.replace(" btn_selected", "");
         this.className += " btn_selected";
-       
+
     });
 }
