@@ -220,7 +220,7 @@ li:hover {
 
 #portfolio h2 {
     text-align: center;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
 }
 
 .gallery {
@@ -316,9 +316,9 @@ form a {
     font-family: 'Syne';
     color: #1D6154;
     background-color: white;
-    height: 37px;
-    margin: 2em 0.4em;
-    padding: 0 20px;
+    height: 40px;
+    margin: 1.5em 0.4em;
+    padding: 0 30px;
     border-radius: 60px;
     font-size: 1.2em;
     border: 1px solid#1D6154;
@@ -329,13 +329,124 @@ form a {
     background-color: #1D6154;
 }
 
+.modal-modify {
+    position: absolute;
+    font-size: 0.5em;
+    font-weight: 100;
+    font-family: "work Sans";
+    border: none;
+    margin: 10px 0px 0 30px;
+}
+
+
+#portfolio h2 {
+    margin-top: 2em
+}
+
 .categories {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 2.5em auto;
+    margin: 1em auto;
 }
 
 #footer-login {
     margin-top: 150px;
+}
+
+
+
+
+/* Page modale */
+
+
+body {
+    box-sizing: border-box;
+}
+.modal {
+    overflow: auto;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: white;
+    width: 530px;
+    max-width: calc(100vw-20px);
+    max-height: calc(100vh-100px);
+    padding: 25px;
+    /* height: 600px; */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-close-div {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.btn-close-modal {
+    border: none;
+    background: none;
+    font-size: 12px;
+}
+
+#gallery figure {
+    position: relative;
+}
+
+.btn-supr {
+    position: absolute;
+    background-color: black;
+    border: none;
+    padding: 5px;
+    top: 5px;
+    right: 5px;
+}
+
+#portfolio #title-modal {
+    font-weight: 100;
+    color: black;
+    font-size: 26px;
+    margin-top: 0.5em;
+}
+
+.btn-delete-gallery {
+    color: #D65353;
+    background: none;
+    border: none;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #B3B3B3;
+    width: 400px;
+    margin: 3em auto;
+}
+
+#gallery {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    /* padding: 30px; */
+}
+
+#gallery img {
+    width: 100%;
 }

@@ -7,8 +7,8 @@ document.getElementById("login").addEventListener("submit", async function (even
         password: event.target.querySelector("#password").value,
     };
 
-    // Récupère la valeur sauvegardée dans le localStorage 
-    let result = window.localStorage.getItem("userToken");
+    // Récupère la valeur sauvegardée dans le SessionStorage
+    let result = window.sessionStorage.getItem("userToken");
 
     const response = await fetch("http://localhost:5678/api/users/login", {
         method: "POST",
@@ -22,14 +22,14 @@ document.getElementById("login").addEventListener("submit", async function (even
     } else {
         result = await response.json();
         const valResult = JSON.stringify(result);
-        window.localStorage.setItem("userToken", valResult);
+        window.sessionStorage.setItem("userToken", valResult);
         // Enlever le message d'erreur et rediriger sur la page d'accueil
         para.remove();
-        location.href = "./index.html"
+        location.href = "./index.html";
     }
 });
 
-// Création d'un paragraphe avant le bouton de valisation pour insérer un message d'erreur
+// Création d'un paragraphe avant le bouton de validation pour insérer un message d'erreur
 const message = document.querySelector("#button");
 const paraMessage = document.createElement("p");
 paraMessage.classList.add("error")

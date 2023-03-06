@@ -8,7 +8,6 @@ async function worksGen(works) {
 
         const gallery = works[i];
 
-        const sectionGallery = document.querySelector(".gallery");
         const figureElement = document.createElement("figure");
 
         const imgElement = document.createElement("img");
@@ -22,6 +21,7 @@ async function worksGen(works) {
         figureElement.appendChild(textElement);
     }
 }
+const sectionGallery = document.querySelector(".gallery");
 worksGen(works);
 
 
@@ -81,3 +81,7 @@ for (let i = 0; i < tabButton.length; i++) {
 
     });
 }
+
+export let test = JSON.parse(sessionStorage.getItem("userToken"));
+// console.log(test.userId);
+
