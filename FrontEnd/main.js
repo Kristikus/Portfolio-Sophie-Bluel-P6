@@ -1,6 +1,9 @@
 // // Obtention des travaux depuis l'api
 const response = await fetch("http://localhost:5678/api/works");
 const works = await response.json();
+const valResult = JSON.stringify(works);
+
+window.localStorage.setItem("works", valResult);
 
 async function worksGen(works) {
 
@@ -54,6 +57,7 @@ const reponse = await fetch("http://localhost:5678/api/categories");
 const categories = await reponse.json();
 
 for (let i = 0; i < categories.length; i++) {
+
     const buttonFilter = document.createElement('button');
     buttonFilter.classList.add("btn");
     buttonFilter.textContent = categories[i].name;
@@ -61,14 +65,14 @@ for (let i = 0; i < categories.length; i++) {
 
     // Filtres par catégories au clic sur les boutons avec une catégorie
     buttonFilter.addEventListener("click", function () {
-
         const worksFiltered = works.filter(function (work) {
-            return work.categoryId === works[i].id
+            return work.category.name === categories[i].name
         });
         document.querySelector(".gallery").innerHTML = "";
         worksGen(worksFiltered);
     });
 }
+
 
 // Boucle sur les boutons pour avoir une classe active sur le bouton cliqué
 const tabButton = categorieDivContain.getElementsByClassName("btn");
@@ -78,10 +82,8 @@ for (let i = 0; i < tabButton.length; i++) {
         let current = document.getElementsByClassName("btn_selected");
         current[0].className = current[0].className.replace(" btn_selected", "");
         this.className += " btn_selected";
-
     });
 }
 
-export let test = JSON.parse(sessionStorage.getItem("userToken"));
+export let data = JSON.parse(sessionStorage.getItem("userToken"));
 // console.log(test.userId);
-
