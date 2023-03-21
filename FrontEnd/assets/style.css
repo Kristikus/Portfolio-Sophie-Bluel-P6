@@ -306,6 +306,10 @@ footer nav ul {
     gap: 10px;
 }
 
+.edition-profil {
+    margin-left: 35px;
+}
+
 .fa-pen-to-square {
     position: absolute;
     color: black;
@@ -314,13 +318,17 @@ footer nav ul {
     margin-top: 9px;
 }
 
+.pen-profil {
+    margin-left: 0;
+}
+
 .pen-edition-mode {
-    color: white;
     position: inherit;
     margin: 0;
 }
 
-.edition-mode p {
+.edition-mode p,
+.pen-edition-mode {
     color: white;
 }
 
@@ -369,13 +377,18 @@ form a {
 
 .modal-modify {
     position: absolute;
-    font-size: 0.5em;
+    /* font-size: 0.5em; */
     font-weight: 100;
     font-family: "work Sans";
     border: none;
     margin: 10px 0px 0 45px;
     cursor: pointer;
     background: none;
+}
+
+.modal-modify-profil {
+    margin-left: 25px;
+    position: inherit;
 }
 
 #portfolio h2 {
@@ -395,9 +408,7 @@ form a {
 
 
 
-
 /* Page modale */
-
 
 body {
     box-sizing: border-box;
@@ -417,7 +428,6 @@ body {
 .modal-contain2.active {
     display: flex;
 }
-
 
 .modal-layer {
     height: 100%;

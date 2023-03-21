@@ -1,3 +1,6 @@
+// import { URL } from './main.js';
+const URL = "http://localhost:5678/api/";
+
 // Evenement sur le bouton de connexion et annule le comportement par défaut du "submit"
 document.getElementById("login").addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -10,7 +13,7 @@ document.getElementById("login").addEventListener("submit", async function (even
     // Récupère la valeur sauvegardée dans le SessionStorage
     let result = window.sessionStorage.getItem("userToken");
 
-    const response = await fetch("http://localhost:5678/api/users/login", {
+    const response = await fetch(`${URL}users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json;charset=utf-8" },
         body: JSON.stringify(inputs)
@@ -34,4 +37,4 @@ const message = document.querySelector("#button");
 const paraMessage = document.createElement("p");
 paraMessage.classList.add("error");
 message.before(paraMessage);
-const para = document.querySelector('.error');
+const para = document.querySelector(".error");

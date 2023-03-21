@@ -1,5 +1,8 @@
 // // Obtention des travaux depuis l'api
-const response = await fetch("http://localhost:5678/api/works");
+const URL = "http://localhost:5678/api/";
+export { URL };
+
+const response = await fetch(`${URL}works`);
 const works = await response.json();
 const valResult = JSON.stringify(works);
 
@@ -14,10 +17,8 @@ export async function worksGen(works) {
         const figureElement = document.createElement("figure");
         figureElement.setAttribute("id", works[i].id);
 
-
         const imgElement = document.createElement("img");
         imgElement.src = gallery.imageUrl;
-
 
         const textElement = document.createElement("figcaption");
         textElement.innerHTML = gallery.title;
@@ -56,12 +57,12 @@ buttonAll.addEventListener("click", function () {
 })
 
 // Creation categories boutons depuis l'api
-const reponse = await fetch("http://localhost:5678/api/categories");
+const reponse = await fetch(`${URL}categories`);
 const categories = await reponse.json();
 
 for (let i = 0; i < categories.length; i++) {
 
-    const buttonFilter = document.createElement('button');
+    const buttonFilter = document.createElement("button");
     buttonFilter.classList.add("btn");
     buttonFilter.textContent = categories[i].name;
     categorieDivContain.appendChild(buttonFilter);

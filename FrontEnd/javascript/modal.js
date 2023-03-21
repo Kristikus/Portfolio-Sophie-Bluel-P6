@@ -1,7 +1,8 @@
-import { data } from './main.js'
+import { data } from './main.js';
 import { worksGen } from './main.js';
+import { URL } from './main.js';
 
-// Quand l'utilisateur administrateur est connecté, faire disparaître les filtres de catégories et apparaître changements en mode édition
+// Quand l'administrateur est connecté, faire disparaître les filtres de catégories et apparaître bande noire en mode édition et bouton modale "modifier"
 if (data.userId === 1) {
     document.querySelector(".categories").style.display = "none";
     const buttonModify = document.createElement("button");
@@ -13,7 +14,6 @@ if (data.userId === 1) {
 
     document.querySelector("#portfolio h2").append(buttonModify);
     document.querySelector(".modal-modify").before(editIcon);
-
 
     let login = document.querySelector(".login-logout")
     login.innerText = "logout";
@@ -42,11 +42,47 @@ if (data.userId === 1) {
 }
 
 
-// Modale html de la gallerie
+// fonctions pour créer div avec le bouton "modifier" en mode édition sous la photo de profil dans l'introduction
+function createDivModifyImg() {
+
+    const divEdition = document.createElement("div");
+    divEdition.classList.add("edition-profil");
+
+    const icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square",);
+
+    const button = document.createElement("button");
+    button.classList.add("modal-modify");
+    button.innerText = "Modifier";
+
+    document.querySelector("#introduction figure").append(divEdition)
+    divEdition.appendChild(icon);
+    divEdition.appendChild(button);
+}
+createDivModifyImg();
+
+function createDivModifyProfil() {
+
+    const divEdition = document.createElement("div");
+    // divEdition.classList.add("edition-profil");
+
+    const icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square", "pen-profil");
+
+    const button = document.createElement("button");
+    button.classList.add("modal-modify", "modal-modify-profil");
+    button.innerText = "Modifier";
+
+    document.querySelector("#introduction h2").before(divEdition)
+    divEdition.appendChild(icon);
+    divEdition.appendChild(button);
+}
+createDivModifyProfil()
+
+// Modale html de la galerie
 const modalGal =
     `<aside class="modal-contain1" role="dialog" aria-labeledby="modal-title">
     <div class="modal-layer modal-toggle"></div>
-
     <div id="modal-gallery">
         <button class="btn-close modal-toggle">X</button>
         <h2 id="modal-title">Galerie photo</h2>
@@ -63,7 +99,6 @@ const modalGal =
 const modalPhoto =
     `<aside class="modal-contain2" role="dialog" aria-labeledby="modal-title">
     <div class="modal-layer modal-toggle"></div>
-
     <div class="modal-photo">
         <a href="#modal-gallery" class="modal-redirect"><i class="fa-solid fa-arrow-left"></i></a>
         <button class="btn-close modal-toggle">X</button>
@@ -78,7 +113,7 @@ const modalPhoto =
             <label for="title">Titre</label>
             <input type="text" id="title" name="title" class="select">
             <label for="category">Catégorie</label>
-            <select id="category" name="select">
+            <select id="category">
                 <option value="">Choisissez une catégorie</option>
             </select>
             <div class="modal-buttons">
@@ -91,13 +126,13 @@ const modalPhoto =
 
 
 // Evénement sur le bouton modifier
-const btnModify = document.querySelector(".modal-modify");
+const btnModify = document.querySelector(".modal-toggle");
 btnModify.addEventListener("click", galleryModalActive);
 
-const responseWorks = await fetch("http://localhost:5678/api/works");
+const responseWorks = await fetch(`${URL}works`);
 const works = await responseWorks.json();
 
-const responseCategories = await fetch("http://localhost:5678/api/categories");
+const responseCategories = await fetch(`${URL}categories`);
 const categories = await responseCategories.json();
 
 
@@ -134,34 +169,33 @@ async function worksGenerate(works) {
         figureElement.appendChild(buttonSupr);
         buttonSupr.appendChild(iconSupr);
 
-
         figureElement.addEventListener("mouseover", function () {
             buttonMove.classList.add("btn-edit-gallery", "btn-move");
             figureElement.appendChild(buttonMove);
             buttonMove.appendChild(iconMove);
 
-        })
+        });
         figureElement.addEventListener("mouseout", function () {
             buttonMove.classList.remove("btn-edit-gallery", "btn-move");
             buttonMove.remove();
         });
     }
-    DeleteWorks()
+    deleteWorks();
 }
 
-// Fonction pour supprimer un des travaux à partir de la modale de la gallerie
-function DeleteWorks() {
+// Fonction pour supprimer un des travaux à partir de la modale de la galerie
+function deleteWorks() {
     // Itération sur chaque bouton de suppression
-    const deletBtn = document.querySelectorAll('.btn-delete');
+    const deletBtn = document.querySelectorAll(".btn-delete");
 
     for (let i = 0; i < deletBtn.length; ++i) {
 
-        deletBtn[i].addEventListener('click', async function (e) {
+        deletBtn[i].addEventListener("click", async function (e) {
             e.preventDefault();
             // console.log(deletBtn[i], "click", works[i].id)
 
             if (confirm("Vous êtes sur le point de supprimer une photo.") == true) {
-                const res = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                const res = await fetch(`${URL}works/${works[i].id}`, {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${data.token}`
@@ -183,7 +217,6 @@ function DeleteWorks() {
         })
     }
 }
-
 
 async function galleryModalActive() {
 
@@ -227,15 +260,14 @@ async function galleryModalActive() {
         const inputFile = document.querySelector(".modal-rectangle #file");
         inputFile.addEventListener("change", miniFile);
 
-
         // Création des options de catégories
         const menuCategory = document.querySelector("#category");
         for (let i = 0; i < categories.length; i++) {
-            const elemli = document.createElement("option");
-            elemli.textContent = categories[i].name;
-            elemli.value = categories[i].id;
-            elemli.setAttribute("id", categories[i].id);
-            menuCategory.append(elemli);
+            const optionList = document.createElement("option");
+            optionList.textContent = categories[i].name;
+            optionList.value = categories[i].id;
+            optionList.setAttribute("id", categories[i].id);
+            menuCategory.append(optionList);
         }
 
         postWork();
@@ -257,7 +289,6 @@ function miniFile() {
     }
 
     const file = this.files[0];
-    // console.log(file.name)
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.addEventListener("load", (e) => appearImage(e));
@@ -291,15 +322,12 @@ function postWork() {
     const errorMessage = document.querySelector(".error");
 
     form.addEventListener("change", function () {
-        const file = document.querySelector("#file").files[0];
-        console.log(file);
+        const image = document.querySelector("#file").files[0];
         const title = document.querySelector("#title").value;
-        console.log(title);
         const category = document.querySelector("#category").value;
-        console.log(category);
         const valid = document.querySelector("#btn-add-photo_valid");
 
-        if (file && title && category) {
+        if (image && title && category) {
             valid.removeAttribute("disabled")
             errorMessage.innerText = "";
         }
@@ -323,29 +351,24 @@ function postWork() {
         formData.append("title", title);
         formData.append("category", category);
 
-        const res = await fetch("http://localhost:5678/api/works", {
+        const res = await fetch(`${URL}works`, {
             method: "POST",
             body: formData,
             headers: {
                 Authorization: `Bearer ${data.token}`
             }
         });
-        console.log(res)
+        // console.log(res)
 
         if (res.ok) {
-            console.log("jdkfndjfsdflndslfndslfndslkndskfdslknfl")
-            const paraMessage = document.querySelector(".error");
-
-            const newGallery = document.querySelector(".gallery");
-            newGallery.innerHTML = "";
             works.push(await res.json());
+            document.querySelector(".gallery").innerHTML = "";
             worksGen(works)
 
-            paraMessage.innerText = "Formulaire envoyé";
-            paraMessage.style.color = "black";
-            console.log(image.size, title)
+            errorMessage.innerText = "Formulaire envoyé";
+            errorMessage.style.color = "black";
         } else {
-            paraMessage.innerText = "Problème avec le formulaire";
+            errorMessage.innerText = "Problème avec le formulaire";
         }
     });
 }
