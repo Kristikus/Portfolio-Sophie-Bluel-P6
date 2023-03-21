@@ -1,128 +1,11 @@
-import { data } from './main.js';
-import { worksGen } from './main.js';
-import { URL } from './main.js';
+import { data, worksGen, URL } from './main.js';
+import { modalGal, modalPhoto } from './html-modals.js';
+import { createDivModifyImg, createDivModifyProfil, edition } from './edition.js';
 
-// Quand l'administrateur est connecté, faire disparaître les filtres de catégories et apparaître bande noire en mode édition et bouton modale "modifier"
-if (data.userId === 1) {
-    document.querySelector(".categories").style.display = "none";
-    const buttonModify = document.createElement("button");
-    buttonModify.classList.add("modal-modify", "modal-toggle");
-    buttonModify.innerText = "Modifier";
-
-    const editIcon = document.createElement("i");
-    editIcon.classList.add("fa-regular", "fa-pen-to-square");
-
-    document.querySelector("#portfolio h2").append(buttonModify);
-    document.querySelector(".modal-modify").before(editIcon);
-
-    let login = document.querySelector(".login-logout")
-    login.innerText = "logout";
-    login.addEventListener("click", function () {
-        window.sessionStorage.removeItem("userToken")
-    });
-
-    let header = document.querySelector("header");
-    let editionMode = document.createElement("div");
-    editionMode.classList.add("edition-mode");
-
-    const editIcon2 = document.createElement("i");
-    editIcon2.classList.add("fa-regular", "fa-pen-to-square", "pen-edition-mode");
-
-    const editionPara = document.createElement("p");
-    editionPara.innerText = "mode édition"
-
-    const editionButton = document.createElement("button");
-    editionButton.classList.add("edition-btn");
-    editionButton.innerText = "publier les changements"
-
-    header.before(editionMode);
-    editionMode.appendChild(editIcon2);
-    editionMode.appendChild(editionPara);
-    editionMode.appendChild(editionButton);
-}
-
-
-// fonctions pour créer div avec le bouton "modifier" en mode édition sous la photo de profil dans l'introduction
-function createDivModifyImg() {
-
-    const divEdition = document.createElement("div");
-    divEdition.classList.add("edition-profil");
-
-    const icon = document.createElement("i");
-    icon.classList.add("fa-regular", "fa-pen-to-square",);
-
-    const button = document.createElement("button");
-    button.classList.add("modal-modify");
-    button.innerText = "Modifier";
-
-    document.querySelector("#introduction figure").append(divEdition)
-    divEdition.appendChild(icon);
-    divEdition.appendChild(button);
-}
+// Quand l'administrateur est connecté, faire disparaître les filtres de catégories et apparaître bande noire en mode édition et boutons "modifier"
+edition()
 createDivModifyImg();
-
-function createDivModifyProfil() {
-
-    const divEdition = document.createElement("div");
-    // divEdition.classList.add("edition-profil");
-
-    const icon = document.createElement("i");
-    icon.classList.add("fa-regular", "fa-pen-to-square", "pen-profil");
-
-    const button = document.createElement("button");
-    button.classList.add("modal-modify", "modal-modify-profil");
-    button.innerText = "Modifier";
-
-    document.querySelector("#introduction h2").before(divEdition)
-    divEdition.appendChild(icon);
-    divEdition.appendChild(button);
-}
-createDivModifyProfil()
-
-// Modale html de la galerie
-const modalGal =
-    `<aside class="modal-contain1" role="dialog" aria-labeledby="modal-title">
-    <div class="modal-layer modal-toggle"></div>
-    <div id="modal-gallery">
-        <button class="btn-close modal-toggle">X</button>
-        <h2 id="modal-title">Galerie photo</h2>
-        <div id="gallery"></div>
-        <div class="modal-buttons">
-            <button type="button" class="btn btn_selected">Ajouter une photo</a></button>
-            <br>
-            <button type="button" class="btn-delete-gallery">Supprimer la galerie</button>
-        </div>
-    </div>
-</aside>`;
-
-// Modale html pour l'ajout de photo
-const modalPhoto =
-    `<aside class="modal-contain2" role="dialog" aria-labeledby="modal-title">
-    <div class="modal-layer modal-toggle"></div>
-    <div class="modal-photo">
-        <a href="#modal-gallery" class="modal-redirect"><i class="fa-solid fa-arrow-left"></i></a>
-        <button class="btn-close modal-toggle">X</button>
-        <h2 id="modal-title">Ajout photo</h2>
-        <form class="form-add-photo">
-            <div class="modal-rectangle">
-                <i class="fa-regular fa-image"></i>
-                <input type="file" id="file" name="file" accept=".png, .jpeg, .jpg" class="select">
-                <label for="file">+ Ajouter photo</label>
-                <p>jpg, png : 4mo max</p>
-            </div>
-            <label for="title">Titre</label>
-            <input type="text" id="title" name="title" class="select">
-            <label for="category">Catégorie</label>
-            <select id="category">
-                <option value="">Choisissez une catégorie</option>
-            </select>
-            <div class="modal-buttons">
-                <p class="error"></p>
-                <input type="submit" value="Valider" id="btn-add-photo_valid">
-            </div>
-        </form>
-    </div>
-</aside>`;
+createDivModifyProfil();
 
 
 // Evénement sur le bouton modifier
@@ -135,7 +18,7 @@ const works = await responseWorks.json();
 const responseCategories = await fetch(`${URL}categories`);
 const categories = await responseCategories.json();
 
-
+// Générer la galerie dans la modale
 async function worksGenerate(works) {
 
     for (let i = 0; i < works.length; i++) {
@@ -183,7 +66,7 @@ async function worksGenerate(works) {
     deleteWorks();
 }
 
-// Fonction pour supprimer un des travaux à partir de la modale de la galerie
+// Supprimer un des travaux de la galerie de la modale
 function deleteWorks() {
     // Itération sur chaque bouton de suppression
     const deletBtn = document.querySelectorAll(".btn-delete");
@@ -192,7 +75,6 @@ function deleteWorks() {
 
         deletBtn[i].addEventListener("click", async function (e) {
             e.preventDefault();
-            // console.log(deletBtn[i], "click", works[i].id)
 
             if (confirm("Vous êtes sur le point de supprimer une photo.") == true) {
                 const res = await fetch(`${URL}works/${works[i].id}`, {
@@ -204,7 +86,6 @@ function deleteWorks() {
                 if (res.ok) {
                     // console.log(res);
                     let index = works.indexOf(works[i]);
-                    // console.log(index)
                     works.splice(index, 1);
                     document.querySelector("#gallery").innerHTML = "";
                     worksGenerate(works);
@@ -219,7 +100,6 @@ function deleteWorks() {
 }
 
 async function galleryModalActive() {
-
     // innerHTML du premier aside
     const modalPlace = document.querySelector(".modal-place");
     modalPlace.innerHTML = modalGal;
@@ -336,8 +216,7 @@ function postWork() {
             valid.setAttribute("disabled", "")
         }
     });
-
-
+    // 
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
