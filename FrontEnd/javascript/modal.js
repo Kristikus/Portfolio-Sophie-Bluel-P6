@@ -1,4 +1,5 @@
-import { data, worksGen, URL } from './main.js';
+import { data, worksGen } from './main.js';
+import {URL} from './essai.js'
 import { modalGal, modalPhoto } from './html-modals.js';
 import { createDivModifyImg, createDivModifyProfil, edition } from './edition.js';
 
@@ -6,7 +7,6 @@ import { createDivModifyImg, createDivModifyProfil, edition } from './edition.js
 edition()
 createDivModifyImg();
 createDivModifyProfil();
-
 
 // Evénement sur le bouton modifier
 const btnModify = document.querySelector(".modal-toggle");
@@ -150,7 +150,6 @@ async function galleryModalActive() {
             menuCategory.append(optionList);
         }
 
-        postWork();
 
         // Enlever classe active pour fermer première modale
         const modalToggle = document.querySelectorAll(".modal-toggle");
@@ -163,8 +162,12 @@ async function galleryModalActive() {
 //Création d'une miniature de l'image sélectionnée à télécharger 
 function miniFile() {
     const regexFile = /\.(jpe?g|png)$/i;
+    const errorMessage = document.querySelector(".error");
+
 
     if (!regexFile.test(this.files[0].name)) {
+        console.log("Mauvais format d'image");
+        errorMessage.innerText = "Format d'image non supporté";
         return;
     }
 
@@ -188,13 +191,14 @@ function miniFile() {
         const img = document.querySelector("#file-image");
         const input = document.querySelector("#file");
         img.addEventListener("click", function () {
-            input.value = "";
+            input.value = null;
             img.remove();
             document.querySelector(".modal-rectangle label").style.visibility = "visible";
         });
     }
-}
 
+    postWork();
+}
 
 // Fonction pour poster une nouvelle image à l'envoi du formulaire
 function postWork() {
@@ -202,21 +206,23 @@ function postWork() {
     const errorMessage = document.querySelector(".error");
 
     form.addEventListener("change", function () {
+        console.log("change")
         const image = document.querySelector("#file").files[0];
         const title = document.querySelector("#title").value;
         const category = document.querySelector("#category").value;
+        console.log( image, title, category)
         const valid = document.querySelector("#btn-add-photo_valid");
-
-        if (image && title && category) {
+        console.log(image)
+        if (image && image.name && title && category) {
+        
             valid.removeAttribute("disabled")
             errorMessage.innerText = "";
-        }
-        else {
+        } else {
             errorMessage.innerText = "Veuillez remplir tous les champs du formulaire";
             valid.setAttribute("disabled", "")
         }
     });
-    // 
+
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
 

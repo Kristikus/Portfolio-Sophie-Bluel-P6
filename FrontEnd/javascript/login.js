@@ -1,5 +1,5 @@
-// import { URL } from './main.js';
-const URL = "http://localhost:5678/api/";
+import { URL } from './essai.js';
+// const URL = "http://localhost:5678/api/";
 
 // Evenement sur le bouton de connexion et annule le comportement par défaut du "submit"
 document.getElementById("login").addEventListener("submit", async function (event) {

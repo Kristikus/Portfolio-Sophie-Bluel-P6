@@ -1,6 +1,6 @@
 // // Obtention des travaux depuis l'api
-const URL = "http://localhost:5678/api/";
-export { URL };
+// const URL = "http://localhost:5678/api/";
+import { URL } from './essai.js';
 
 const response = await fetch(`${URL}works`);
 const works = await response.json();
@@ -89,5 +89,5 @@ for (let i = 0; i < tabButton.length; i++) {
     });
 }
 
-export let data = JSON.parse(sessionStorage.getItem("userToken"));
+export let data = JSON.parse(window.sessionStorage.getItem("userToken"));
 // console.log(test.userId);

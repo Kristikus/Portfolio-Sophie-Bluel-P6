@@ -30,7 +30,7 @@ export const modalPhoto =
                 <p>jpg, png : 4mo max</p>
             </div>
             <label for="title">Titre</label>
-            <input type="text" id="title" name="title" class="select">
+            <input type="text" id="title" name="title">
             <label for="category">Catégorie</label>
             <select id="category">
                 <option value=""></option>
