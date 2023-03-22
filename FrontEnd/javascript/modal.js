@@ -133,10 +133,6 @@ async function galleryModalActive() {
             galleryModalActive();
         });
 
-        // Ajout attribut "disabled" sur le bouton de validation du formulaire Ajout de photo
-        // const validButton = document.querySelector("#btn-add-photo_valid");
-        // validButton.setAttribute("disabled", "")
-
         const inputFile = document.querySelector(".modal-rectangle #file");
         inputFile.addEventListener("change", miniFile);
 
@@ -151,7 +147,6 @@ async function galleryModalActive() {
             optionList.setAttribute("id", categories[i].id);
             menuCategory.append(optionList);
         }
-
 
         // Enlever classe active pour fermer première modale
         const modalToggle = document.querySelectorAll(".modal-toggle");
@@ -224,18 +219,18 @@ function postWork() {
         const category = document.querySelector("#category");
 
         const imageValue = image.value.trim();
-        console.log(imageValue)
+        console.log(imageValue);
 
         const titleValue = title.value.trim();
         const categoryValue = category.value.trim();
-        var fileRegex = document.querySelector("#file").files[0].name;
+        const fileRegex = document.querySelector("#file").files[0].name;
 
-        console.log(regexFile, regexFile.test(fileRegex))
+        // console.log(regexFile, regexFile.test(fileRegex));
 
         if ((titleValue !== "") && (imageValue !== "") && (categoryValue !== "") && regexFile.test(fileRegex)) {
             valid.classList.add("form-valid");
         } else {
-            valid.classList.remove('form-valid')
+            valid.classList.remove('form-valid');
         }
     }
 
