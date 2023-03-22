@@ -1,4 +1,4 @@
-import { data } from './main.js';
+import { data } from './url.js';
 
 // Quand l'administrateur est connecté, faire disparaître les filtres de catégories et apparaître bande noire en mode édition et bouton modale "modifier"
 export function edition() {
@@ -57,7 +57,7 @@ export function createDivModifyImg() {
     divEdition.appendChild(icon);
     divEdition.appendChild(button);
 }
-// createDivModifyImg();
+
 
 // Créer div avec le bouton "modifier" en mode édition pour le profil de l'utilisateur dans l'introduction
 export function createDivModifyProfil() {
@@ -74,4 +74,3 @@ export function createDivModifyProfil() {
     divEdition.appendChild(icon);
     divEdition.appendChild(button);
 }
-// createDivModifyProfil()

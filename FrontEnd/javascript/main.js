@@ -3,9 +3,9 @@ import { URL } from './url.js';
 
 const response = await fetch(`${URL}works`);
 const works = await response.json();
-const valResult = JSON.stringify(works);
+const workResult = JSON.stringify(works);
 
-window.localStorage.setItem("works", valResult);
+window.localStorage.setItem("works", workResult);
 
 export async function worksGen(works) {
 
@@ -87,6 +87,3 @@ for (let i = 0; i < tabButton.length; i++) {
         this.className += " btn_selected";
     });
 }
-
-export let data = JSON.parse(window.sessionStorage.getItem("userToken"));
-// console.log(test.userId);

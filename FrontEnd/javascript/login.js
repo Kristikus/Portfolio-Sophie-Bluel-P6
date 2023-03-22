@@ -1,5 +1,4 @@
-import { URL } from './url.js';
-// const URL = "http://localhost:5678/api/";
+import { URL, data } from './url.js';
 
 // Evenement sur le bouton de connexion et annule le comportement par défaut du "submit"
 document.getElementById("login").addEventListener("submit", async function (event) {
@@ -11,7 +10,7 @@ document.getElementById("login").addEventListener("submit", async function (even
     };
 
     // Récupère la valeur sauvegardée dans le SessionStorage
-    let result = window.sessionStorage.getItem("userToken");
+    let result = data;
 
     const response = await fetch(`${URL}users/login`, {
         method: "POST",
@@ -21,11 +20,11 @@ document.getElementById("login").addEventListener("submit", async function (even
     // Si réponse différente de 200, alors insérer un message d'erreur global
     if (!response.ok) {
         para.innerText = "Erreur dans l'identifiant ou le mot de passe";
-        // Sinon, récupérer la réponse (token) au format json et la sauvegarder dans le localStorage
+        // Sinon, récupérer la réponse (token) au format json et la sauvegarder dans le sessionStorage
     } else {
         result = await response.json();
-        const valResult = JSON.stringify(result);
-        window.sessionStorage.setItem("userToken", valResult);
+        const tokenResult = JSON.stringify(result);
+        window.sessionStorage.setItem("userToken", tokenResult);
         // Enlever le message d'erreur et rediriger sur la page d'accueil
         para.remove();
         location.href = "./index.html";

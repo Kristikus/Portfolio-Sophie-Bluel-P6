@@ -1,5 +1,5 @@
-import { data, worksGen } from './main.js';
-import { URL } from './url.js'
+import { worksGen } from './main.js';
+import { URL, data } from './url.js'
 import { modalGal, modalPhoto } from './html-modals.js';
 import { createDivModifyImg, createDivModifyProfil, edition } from './edition.js';
 
@@ -156,21 +156,20 @@ async function galleryModalActive() {
     }
 }
 
-//Création d'une miniature de l'image sélectionnée à télécharger 
+//Création d'une miniature de l'image sélectionnée à télécharger
 function miniFile() {
     const regexFile = /\.(jpe?g|png)$/i;
     const errorMessage = document.querySelector(".error");
     const valid = document.querySelector("#btn-add-photo_valid");
+    valid.setAttribute("disabled", "");
+
 
     if (!regexFile.test(this.files[0].name)) {
-        console.log("Mauvais format d'image");
         errorMessage.innerText = "Format d'image non supporté";
-        valid.classList.remove("form-valid");
         return;
     }
 
     const file = this.files[0];
-    console.log("this files :", file)
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.addEventListener("load", (e) => appearImage(e));
@@ -192,45 +191,51 @@ function miniFile() {
         img.addEventListener("click", function () {
             input.value = "";
             img.remove();
-            valid.classList.remove("form-valid");
+            errorMessage.innerText = error;
+            valid.setAttribute("disabled", "");
 
             document.querySelector(".modal-rectangle label").style.visibility = "visible";
         });
     }
 
 }
+const error = "Remplissez tous les champs du formulaire";
 
 function postWork() {
     const form = document.querySelector(".form-add-photo");
     const errorMessage = document.querySelector(".error");
+    const valid = document.querySelector("#btn-add-photo_valid");
+    valid.setAttribute("disabled", "");
 
-    form.addEventListener("input", function () {
+    form.addEventListener("change", function () {
         validateFields();
     });
 
-    const valid = document.querySelector("#btn-add-photo_valid");
     const regexFile = /\.(jpe?g|png)$/i;
 
     function validateFields() {
         const image = document.querySelector("#file");
-        console.log(image.value);
 
         const title = document.querySelector("#title");
         const category = document.querySelector("#category");
 
         const imageValue = image.value.trim();
-        console.log(imageValue);
-
         const titleValue = title.value.trim();
         const categoryValue = category.value.trim();
-        const fileRegex = document.querySelector("#file").files[0].name;
 
-        // console.log(regexFile, regexFile.test(fileRegex));
+        if (imageValue == "") {
+            errorMessage.innerText = error;
+        } else if (!imageValue == "") {
+            const fileRegex = document.querySelector("#file").files[0].name;
+            // console.log(regexFile, regexFile.test(fileRegex));
 
-        if ((titleValue !== "") && (imageValue !== "") && (categoryValue !== "") && regexFile.test(fileRegex)) {
-            valid.classList.add("form-valid");
-        } else {
-            valid.classList.remove('form-valid');
+            if ((titleValue !== "") && (categoryValue !== "") && regexFile.test(fileRegex)) {
+                valid.removeAttribute("disabled");
+                errorMessage.innerHTML = "";
+            } else {
+                errorMessage.innerText = error;
+                valid.setAttribute("disabled", "");
+            }
         }
     }
 
@@ -260,11 +265,11 @@ function postWork() {
             works.push(await res.json());
             document.querySelector(".gallery").innerHTML = "";
             worksGen(works)
-
             errorMessage.innerText = "Formulaire envoyé";
             errorMessage.style.color = "black";
+            document.querySelector(".modal-contain2").classList.remove("active");
         } else {
-            errorMessage.innerText = "Problème avec le formulaire";
+            errorMessage.innerText = error;
         }
     });
 }
