@@ -1,6 +1,5 @@
 // // Obtention des travaux depuis l'api
-// const URL = "http://localhost:5678/api/";
-import { URL } from './essai.js';
+import { URL } from './url.js';
 
 const response = await fetch(`${URL}works`);
 const works = await response.json();

@@ -593,13 +593,12 @@ input[type="file"] {
     border: none;
     color: #306685;
 }
-
-#btn-add-photo_valid {
-    background: #1D6154;
+#btn-add-photo_valid.form-valid {
+    background-color: #1D6154;
     border: none;
 }
 
-#btn-add-photo_valid[disabled] {
+#btn-add-photo_valid {
     background-color: #A7A7A7;
 }
 

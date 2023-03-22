@@ -1,4 +1,4 @@
-import { URL } from './essai.js';
+import { URL } from './url.js';
 // const URL = "http://localhost:5678/api/";
 
 // Evenement sur le bouton de connexion et annule le comportement par défaut du "submit"

@@ -1,5 +1,5 @@
 import { data, worksGen } from './main.js';
-import {URL} from './essai.js'
+import { URL } from './url.js'
 import { modalGal, modalPhoto } from './html-modals.js';
 import { createDivModifyImg, createDivModifyProfil, edition } from './edition.js';
 
@@ -134,11 +134,13 @@ async function galleryModalActive() {
         });
 
         // Ajout attribut "disabled" sur le bouton de validation du formulaire Ajout de photo
-        const validButton = document.querySelector("#btn-add-photo_valid");
-        validButton.setAttribute("disabled", "")
+        // const validButton = document.querySelector("#btn-add-photo_valid");
+        // validButton.setAttribute("disabled", "")
 
         const inputFile = document.querySelector(".modal-rectangle #file");
         inputFile.addEventListener("change", miniFile);
+
+        postWork();
 
         // Création des options de catégories
         const menuCategory = document.querySelector("#category");
@@ -163,15 +165,17 @@ async function galleryModalActive() {
 function miniFile() {
     const regexFile = /\.(jpe?g|png)$/i;
     const errorMessage = document.querySelector(".error");
-
+    const valid = document.querySelector("#btn-add-photo_valid");
 
     if (!regexFile.test(this.files[0].name)) {
         console.log("Mauvais format d'image");
         errorMessage.innerText = "Format d'image non supporté";
+        valid.classList.remove("form-valid");
         return;
     }
 
     const file = this.files[0];
+    console.log("this files :", file)
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.addEventListener("load", (e) => appearImage(e));
@@ -191,37 +195,49 @@ function miniFile() {
         const img = document.querySelector("#file-image");
         const input = document.querySelector("#file");
         img.addEventListener("click", function () {
-            input.value = null;
+            input.value = "";
             img.remove();
+            valid.classList.remove("form-valid");
+
             document.querySelector(".modal-rectangle label").style.visibility = "visible";
         });
     }
 
-    postWork();
 }
 
-// Fonction pour poster une nouvelle image à l'envoi du formulaire
 function postWork() {
     const form = document.querySelector(".form-add-photo");
     const errorMessage = document.querySelector(".error");
 
-    form.addEventListener("change", function () {
-        console.log("change")
-        const image = document.querySelector("#file").files[0];
-        const title = document.querySelector("#title").value;
-        const category = document.querySelector("#category").value;
-        console.log( image, title, category)
-        const valid = document.querySelector("#btn-add-photo_valid");
-        console.log(image)
-        if (image && image.name && title && category) {
-        
-            valid.removeAttribute("disabled")
-            errorMessage.innerText = "";
-        } else {
-            errorMessage.innerText = "Veuillez remplir tous les champs du formulaire";
-            valid.setAttribute("disabled", "")
-        }
+    form.addEventListener("input", function () {
+        validateFields();
     });
+
+    const valid = document.querySelector("#btn-add-photo_valid");
+    const regexFile = /\.(jpe?g|png)$/i;
+
+    function validateFields() {
+        const image = document.querySelector("#file");
+        console.log(image.value);
+
+        const title = document.querySelector("#title");
+        const category = document.querySelector("#category");
+
+        const imageValue = image.value.trim();
+        console.log(imageValue)
+
+        const titleValue = title.value.trim();
+        const categoryValue = category.value.trim();
+        var fileRegex = document.querySelector("#file").files[0].name;
+
+        console.log(regexFile, regexFile.test(fileRegex))
+
+        if ((titleValue !== "") && (imageValue !== "") && (categoryValue !== "") && regexFile.test(fileRegex)) {
+            valid.classList.add("form-valid");
+        } else {
+            valid.classList.remove('form-valid')
+        }
+    }
 
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
