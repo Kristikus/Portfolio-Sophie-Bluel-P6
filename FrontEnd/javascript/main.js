@@ -1,20 +1,20 @@
-// // Obtention des travaux depuis l'api
-import { URL } from './url.js';
+import { URL } from './export.js';
 
+// // Obtention des travaux depuis l'api
 const response = await fetch(`${URL}works`);
 const works = await response.json();
-const workResult = JSON.stringify(works);
 
-window.localStorage.setItem("works", workResult);
-
-export async function worksGen(works) {
+const sectionGallery = document.querySelector(".gallery");
+worksGen(works);
+// Générer les travaux à partir de la réponse de la requête
+export function worksGen(works) {
 
     for (let i = 0; i < works.length; i++) {
 
         const gallery = works[i];
 
         const figureElement = document.createElement("figure");
-        figureElement.setAttribute("id", works[i].id);
+        figureElement.setAttribute("id", gallery.id);
 
         const imgElement = document.createElement("img");
         imgElement.src = gallery.imageUrl;
@@ -27,11 +27,9 @@ export async function worksGen(works) {
         figureElement.appendChild(textElement);
     }
 }
-const sectionGallery = document.querySelector(".gallery");
-worksGen(works);
 
 
-// Création d'une div pour contenir les boutons et leur appliquer un style css
+// Création d'une div pour contenir les boutons de filtre et leur appliquer un style css
 const categorieElement = document.querySelector("#portfolio h2");
 const categorieDiv = document.createElement("div");
 categorieElement.after(categorieDiv);
@@ -55,9 +53,9 @@ buttonAll.addEventListener("click", function () {
     worksGen(buttonAllFilter);
 })
 
-// Creation categories boutons depuis l'api
-const reponse = await fetch(`${URL}categories`);
-const categories = await reponse.json();
+// Creation des boutons de categories depuis l'api
+const res = await fetch(`${URL}categories`);
+const categories = await res.json();
 
 for (let i = 0; i < categories.length; i++) {
 
