@@ -46,12 +46,13 @@ categorieDivContain.appendChild(buttonAll);
 
 // Filtre par défaut de tous les travaux au clic sur le bouton "Tous"
 buttonAll.addEventListener("click", function () {
-    const buttonAllFilter = works.filter(function (work) {
-        return work.categorieId === works.id;
+    const worksAllFiltered = works.filter(function (work) {
+        return work.id;
     });
+  
     document.querySelector(".gallery").innerHTML = "";
-    worksGen(buttonAllFilter);
-})
+    worksGen(worksAllFiltered);
+});
 
 // Creation des boutons de categories depuis l'api
 const res = await fetch(`${URL}categories`);
